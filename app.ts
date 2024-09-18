@@ -3,7 +3,7 @@ const addOrder: HTMLParagraphElement = document.querySelector(
   ".send-order"
 ) as HTMLParagraphElement;
 
-const tabalOrders: HTMLDivElement = document.querySelector(".order")! 
+const tabalOrders: HTMLDivElement = document.querySelector(".order")!;
 
 const getAllFlight = async (): Promise<void> => {
   const res: Response = await fetch(BASE_URl + "flights");
@@ -52,52 +52,67 @@ const addOrderToServer = async (order: Order): Promise<void> => {
 };
 
 const refresh = async (): Promise<void> => {
-    const res: Response = await fetch(`${BASE_URl}pasangers?agent=Pahshish`)
-    const orders: Order[] = await res.json()
-    tabalOrders.innerHTML= ''
+  const res: Response = await fetch(`${BASE_URl}pasangers?agent=Pahshish`);
+  const orders: Order[] = await res.json();
+  tabalOrders.innerHTML = "";
 
-    for(const order of orders){
-        const htmlOrdere = await creatRowHtml(order)
-        console.log(htmlOrdere);
-        
-        tabalOrders.appendChild(htmlOrdere)
-    }
-} 
+  for (const order of orders) {
+    const htmlOrdere = await creatRowHtml(order);
+    console.log(htmlOrdere);
 
-const creatRowHtml = async(order:Order): Promise<HTMLDivElement> => {
-    const res: Response = await fetch(`${BASE_URl}flights/${order.flight_id}`)
-    const flight: Flight = await res.json()
-    
-    const divInformation: HTMLDivElement = document.createElement("div")
-    divInformation.classList.add("information")
+    tabalOrders.appendChild(htmlOrdere);
+  }
+};
 
-    const divName: HTMLDivElement = document.createElement("div")
-    const pName: HTMLParagraphElement = document.createElement("p")
-    pName.textContent = order.name
-    divName.classList.add("information-order")
-    divName.appendChild(pName)
+const creatRowHtml = async (order: Order): Promise<HTMLDivElement> => {
+  const res: Response = await fetch(`${BASE_URl}flights/${order.flight_id}`);
+  const flight: Flight = await res.json();
 
-    const divFlight: HTMLDivElement = document.createElement("div")
-    const pFlights: HTMLParagraphElement = document.createElement("p")
-    pFlights.textContent = `from: ${flight.from} -> ${flight.to} (${flight.date})`
-    divFlight.classList.add("information-order")
-    divFlight.appendChild(pFlights)
+  const divInformation: HTMLDivElement = document.createElement("div");
+  divInformation.classList.add("information");
 
-    const divBottun: HTMLDivElement = document.createElement("div")
-    const edit: HTMLParagraphElement = document.createElement("p")
-    edit.textContent = "edit"
-    const remov: HTMLParagraphElement = document.createElement("p")
-    remov.textContent = "remove"
-    divBottun.classList.add("edit-bottun")
-    divBottun.appendChild(edit)
-    divBottun.appendChild(remov)
+  const divName: HTMLDivElement = document.createElement("div");
+  const pName: HTMLParagraphElement = document.createElement("p");
+  pName.textContent = order.name;
+  divName.classList.add("information-order");
+  divName.appendChild(pName);
 
-    divInformation.appendChild(divName)
-    divInformation.appendChild(divFlight)
-    divInformation.appendChild(divBottun)
+  const divFlight: HTMLDivElement = document.createElement("div");
+  const pFlights: HTMLParagraphElement = document.createElement("p");
+  pFlights.textContent = `from: ${flight.from} -> ${flight.to} (${flight.date})`;
+  divFlight.classList.add("information-order");
+  divFlight.appendChild(pFlights);
 
-    return divInformation
-}
+  const divBottun: HTMLDivElement = document.createElement("div");
+  const edit: HTMLParagraphElement = document.createElement("p");
+  edit.textContent = "edit";
+  edit.addEventListener("click", () => {
+    (document.querySelector(".edit-order") as HTMLDivElement).style.display =
+      "flex";
+  });
+  const remov: HTMLParagraphElement = document.createElement("p");
+  remov.textContent = "remove";
+  remov.addEventListener("click", async (): Promise<void> => {
+    await removFromServer(order.id);
+    await refresh()
+  });
+
+  divBottun.classList.add("edit-bottun");
+  divBottun.appendChild(edit);
+  divBottun.appendChild(remov);
+
+  divInformation.appendChild(divName);
+  divInformation.appendChild(divFlight);
+  divInformation.appendChild(divBottun);
+
+  return divInformation;
+};
+
+const removFromServer = async (id: string): Promise<void> => {
+  const res = await fetch(BASE_URl + "pasangers/" + id, {
+    method: "DELETE",
+  });
+};
 
 addOrder.addEventListener("click", async (e) => {
   const order: Order = creatNewOrder();
@@ -113,6 +128,7 @@ interface Flight {
 }
 
 interface Order {
+  id: string;
   createdAt: string;
   name: string;
   gender: string;
@@ -123,4 +139,4 @@ interface Order {
 //סתם בןדק
 
 getAllFlight();
-refresh()
+refresh();

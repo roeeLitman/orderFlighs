@@ -45,7 +45,7 @@ const addOrderToServer = async (order) => {
 const refresh = async () => {
     const res = await fetch(`${BASE_URl}pasangers?agent=Pahshish`);
     const orders = await res.json();
-    tabalOrders.innerHTML = '';
+    tabalOrders.innerHTML = "";
     for (const order of orders) {
         const htmlOrdere = await creatRowHtml(order);
         console.log(htmlOrdere);
@@ -70,8 +70,16 @@ const creatRowHtml = async (order) => {
     const divBottun = document.createElement("div");
     const edit = document.createElement("p");
     edit.textContent = "edit";
+    edit.addEventListener("click", () => {
+        document.querySelector(".edit-order").style.display =
+            "flex";
+    });
     const remov = document.createElement("p");
     remov.textContent = "remove";
+    remov.addEventListener("click", async () => {
+        await removFromServer(order.id);
+        await refresh();
+    });
     divBottun.classList.add("edit-bottun");
     divBottun.appendChild(edit);
     divBottun.appendChild(remov);
@@ -79,6 +87,11 @@ const creatRowHtml = async (order) => {
     divInformation.appendChild(divFlight);
     divInformation.appendChild(divBottun);
     return divInformation;
+};
+const removFromServer = async (id) => {
+    const res = await fetch(BASE_URl + "pasangers/" + id, {
+        method: "DELETE",
+    });
 };
 addOrder.addEventListener("click", async (e) => {
     const order = creatNewOrder();
