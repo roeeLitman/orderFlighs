@@ -1,0 +1,59 @@
+*{
+    margin: 0;
+    border: 0;
+    box-sizing: border-box;
+}
+body{
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    align-items: center;
+    gap: 7px;
+}
+
+.creat-flight{
+    display: flex;
+    flex-direction: column;
+    justify-content:space-around;
+    gap: 20px;
+    border: 1px solid;
+    width: 90%;
+    height: 20%;
+}
+
+.creat-flight .top{
+    display: flex;
+    flex-direction: row;
+    justify-content:center;
+
+}
+
+.creat-flight .down{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap:18%;
+}
+
+.order{
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    width: 90%;
+    height: 80%;
+    gap: 5px;
+    border: 1px solid;
+}
+
+.information {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+}
+.edit-bottun
+{
+    display: flex;
+    gap: 8px;
+}
+
