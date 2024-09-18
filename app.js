@@ -45,12 +45,12 @@ const addOrderToServer = async (order) => {
 const refresh = async () => {
     const res = await fetch(`${BASE_URl}pasangers?agent=Pahshish`);
     const orders = await res.json();
+    tabalOrders.innerHTML = '';
     for (const order of orders) {
         const htmlOrdere = await creatRowHtml(order);
         console.log(htmlOrdere);
         tabalOrders.appendChild(htmlOrdere);
     }
-    console.log(await res.json());
 };
 const creatRowHtml = async (order) => {
     const res = await fetch(`${BASE_URl}flights/${order.flight_id}`);

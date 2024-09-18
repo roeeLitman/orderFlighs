@@ -54,6 +54,7 @@ const addOrderToServer = async (order: Order): Promise<void> => {
 const refresh = async (): Promise<void> => {
     const res: Response = await fetch(`${BASE_URl}pasangers?agent=Pahshish`)
     const orders: Order[] = await res.json()
+    tabalOrders.innerHTML= ''
 
     for(const order of orders){
         const htmlOrdere = await creatRowHtml(order)
@@ -61,7 +62,6 @@ const refresh = async (): Promise<void> => {
         
         tabalOrders.appendChild(htmlOrdere)
     }
-    console.log(await res.json()); 
 } 
 
 const creatRowHtml = async(order:Order): Promise<HTMLDivElement> => {
