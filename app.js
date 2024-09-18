@@ -85,5 +85,6 @@ addOrder.addEventListener("click", async (e) => {
     await addOrderToServer(order);
     await refresh();
 });
+//סתם בןדק
 getAllFlight();
 refresh();
